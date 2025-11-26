@@ -98,6 +98,45 @@ const Index = () => {
     }
   ];
 
+  const technologies = [
+    {
+      icon: 'Layers',
+      title: 'BIM-моделирование',
+      description: 'Создание 3D-модели объекта для точного планирования и контроля на всех этапах строительства',
+      benefits: ['Исключение ошибок', 'Экономия до 20% времени', 'Визуализация проекта']
+    },
+    {
+      icon: 'Zap',
+      title: 'Энергоэффективные решения',
+      description: 'Современные материалы и системы для снижения энергопотребления здания',
+      benefits: ['Экономия на отоплении', 'Класс A+ энергоэффективности', 'Экологичность']
+    },
+    {
+      icon: 'Cpu',
+      title: 'Умный дом',
+      description: 'Интеграция систем автоматизации для комфорта и безопасности жильцов',
+      benefits: ['Управление со смартфона', 'Безопасность 24/7', 'Экономия ресурсов']
+    },
+    {
+      icon: 'BoxSelect',
+      title: 'Модульное строительство',
+      description: 'Использование готовых модулей для ускорения процесса возведения объектов',
+      benefits: ['Скорость в 2 раза выше', 'Контроль качества на производстве', 'Всесезонность']
+    },
+    {
+      icon: 'Shield',
+      title: 'Сейсмостойкие конструкции',
+      description: 'Специальные технологии для обеспечения безопасности зданий в сейсмоактивных зонах',
+      benefits: ['Повышенная безопасность', 'Соответствие СНиП', 'Долговечность']
+    },
+    {
+      icon: 'Droplets',
+      title: 'Экологичные материалы',
+      description: 'Применение безопасных для здоровья и окружающей среды стройматериалов',
+      benefits: ['Здоровый микроклимат', 'Сертификация LEED', 'Утилизируемость']
+    }
+  ];
+
   const calculateCost = () => {
     const basePrices: Record<string, number> = {
       residential: 45000,
@@ -152,6 +191,9 @@ const Index = () => {
               </button>
               <button onClick={() => scrollToSection('projects')} className="text-foreground hover:text-primary transition-colors font-medium">
                 Проекты
+              </button>
+              <button onClick={() => scrollToSection('technologies')} className="text-foreground hover:text-primary transition-colors font-medium">
+                Технологии
               </button>
               <button onClick={() => scrollToSection('calculator')} className="text-foreground hover:text-primary transition-colors font-medium">
                 Калькулятор
@@ -363,6 +405,82 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="technologies" className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-accent/10 text-accent">
+              <Icon name="Sparkles" size={16} className="mr-1" />
+              Инновации
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Современные технологии</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Мы используем передовые методы и инструменты для создания надежных и комфортных объектов
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {technologies.map((tech, index) => (
+              <Card key={index} className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/30 overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <div className="w-20 h-20 bg-gradient-to-br from-accent/20 to-primary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 mb-4">
+                        <Icon name={tech.icon} size={40} className="text-accent" />
+                      </div>
+                      <div className="absolute -top-2 -right-2 w-12 h-12 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/20 transition-all duration-300"></div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-accent transition-colors">
+                        {tech.title}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed mb-6">
+                        {tech.description}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2 pt-4 border-t border-border">
+                      <div className="text-sm font-semibold text-muted-foreground mb-3">Преимущества:</div>
+                      {tech.benefits.map((benefit, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-sm">
+                          <Icon name="CheckCircle2" size={16} className="text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-16 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-8 md:p-12">
+            <div className="max-w-4xl mx-auto text-center">
+              <Icon name="Award" size={48} className="mx-auto mb-6 text-primary" />
+              <h3 className="text-3xl font-bold mb-4">Сертифицированные специалисты</h3>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Наша команда регулярно проходит обучение по новым технологиям и методам строительства. 
+                Мы являемся партнерами ведущих производителей строительных материалов и оборудования.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <div className="bg-white rounded-xl p-6 shadow-md">
+                  <div className="text-4xl font-bold text-primary mb-2">50+</div>
+                  <div className="text-sm text-muted-foreground">Внедренных технологий</div>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-md">
+                  <div className="text-4xl font-bold text-accent mb-2">15</div>
+                  <div className="text-sm text-muted-foreground">Патентов на разработки</div>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-md">
+                  <div className="text-4xl font-bold text-primary mb-2">100%</div>
+                  <div className="text-sm text-muted-foreground">Соответствие стандартам</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
