@@ -1443,7 +1443,8 @@ const Index = () => {
           </div>
         </div>
 
-        <body><!-- Yandex.Metrika informer -->
+        <body>
+        <!-- Yandex.Metrika informer -->
 <a href="https://metrika.yandex.ru/stat/?id=105515469&amp;from=informer" target="_blank" rel="nofollow">
     <img src="https://informer.yandex.ru/informer/105515469/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
          style="width:88px; height:31px; border:0;"
