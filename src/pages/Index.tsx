@@ -1431,7 +1431,7 @@ const Index = () => {
             <div>
               <h4 className="font-bold mb-4">Контакты</h4>
               <ul className="space-y-2 text-white/80 text-sm">
-                <li>+7 (495) 920-429-86</li>
+                <li>+7 (495) 920-29-86</li>
                 <li>info@stroymaster.ru</li>
                 <li>г. Москва, ул. Строителей, 15</li>
               </ul>
