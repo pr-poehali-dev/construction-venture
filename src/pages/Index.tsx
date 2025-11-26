@@ -137,6 +137,86 @@ const Index = () => {
     }
   ];
 
+  const guarantees = [
+    {
+      icon: 'FileCheck',
+      title: 'Гарантия на работы',
+      period: '5 лет',
+      description: 'Полная гарантия на все виды строительно-монтажных работ',
+      details: [
+        'Бесплатное устранение дефектов',
+        'Гарантийное обслуживание',
+        'Юридическое сопровождение'
+      ]
+    },
+    {
+      icon: 'CalendarCheck',
+      title: 'Соблюдение сроков',
+      period: '100%',
+      description: 'Фиксация сроков в договоре с финансовыми гарантиями',
+      details: [
+        'Штрафы за просрочку',
+        'Поэтапный график работ',
+        'Онлайн-отчетность'
+      ]
+    },
+    {
+      icon: 'ShieldCheck',
+      title: 'Страхование объекта',
+      period: 'Полное',
+      description: 'Страхование строительных рисков на весь период работ',
+      details: [
+        'Защита от форс-мажора',
+        'Страхование ответственности',
+        'Компенсация ущерба'
+      ]
+    },
+    {
+      icon: 'BadgeCheck',
+      title: 'Контроль качества',
+      period: '24/7',
+      description: 'Многоуровневый контроль на каждом этапе строительства',
+      details: [
+        'Собственная лаборатория',
+        'Проверка материалов',
+        'Технический надзор'
+      ]
+    }
+  ];
+
+  const workStages = [
+    {
+      number: '01',
+      title: 'Консультация и замер',
+      duration: '1-3 дня',
+      description: 'Выезд специалиста, осмотр участка, обсуждение пожеланий'
+    },
+    {
+      number: '02',
+      title: 'Проектирование',
+      duration: '2-4 недели',
+      description: 'Разработка проектной документации, согласование с заказчиком'
+    },
+    {
+      number: '03',
+      title: 'Согласование и договор',
+      duration: '3-5 дней',
+      description: 'Подписание договора, получение разрешений, подготовка площадки'
+    },
+    {
+      number: '04',
+      title: 'Строительство',
+      duration: 'По проекту',
+      description: 'Поэтапное выполнение работ с регулярной отчетностью'
+    },
+    {
+      number: '05',
+      title: 'Сдача объекта',
+      duration: '5-7 дней',
+      description: 'Приемка работ, устранение замечаний, передача документов'
+    }
+  ];
+
   const calculateCost = () => {
     const basePrices: Record<string, number> = {
       residential: 45000,
@@ -481,6 +561,127 @@ const Index = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-primary">
+              <Icon name="ShieldCheck" size={16} className="mr-1" />
+              Гарантии
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Ваша уверенность — наш приоритет</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Мы несем полную ответственность за качество работ и соблюдение сроков
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {guarantees.map((guarantee, index) => (
+              <Card key={index} className="relative overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/40">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-all duration-300"></div>
+                <CardContent className="p-6 relative">
+                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Icon name={guarantee.icon} size={32} className="text-primary" />
+                  </div>
+                  <div className="text-3xl font-bold text-primary mb-2">{guarantee.period}</div>
+                  <h3 className="text-xl font-bold mb-3">{guarantee.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    {guarantee.description}
+                  </p>
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    {guarantee.details.map((detail, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm">
+                        <Icon name="Check" size={16} className="text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">{detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-br from-secondary via-secondary/95 to-secondary text-white rounded-3xl p-8 md:p-12">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h3 className="text-3xl md:text-4xl font-bold mb-4">Этапы работы</h3>
+                <p className="text-white/80 text-lg">
+                  Прозрачный процесс от первой встречи до сдачи объекта
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {workStages.map((stage, index) => (
+                  <div key={index} className="relative">
+                    <div className="flex flex-col md:flex-row gap-6 items-start md:items-center bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/15 transition-all duration-300">
+                      <div className="flex-shrink-0">
+                        <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center">
+                          <span className="text-3xl font-bold text-white">{stage.number}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
+                          <h4 className="text-2xl font-bold">{stage.title}</h4>
+                          <Badge className="bg-accent text-white w-fit">
+                            <Icon name="Clock" size={14} className="mr-1" />
+                            {stage.duration}
+                          </Badge>
+                        </div>
+                        <p className="text-white/80 leading-relaxed">{stage.description}</p>
+                      </div>
+
+                      {index < workStages.length - 1 && (
+                        <div className="hidden md:block absolute left-10 top-full w-0.5 h-6 bg-white/20"></div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-12 text-center">
+                <Button 
+                  size="lg" 
+                  onClick={() => scrollToSection('calculator')}
+                  className="bg-primary hover:bg-primary/90 text-white"
+                >
+                  <Icon name="Calculator" size={20} className="mr-2" />
+                  Рассчитать стоимость и сроки
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mt-16">
+            <Card className="text-center p-8 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <Icon name="Clock" size={48} className="mx-auto mb-4 text-primary" />
+              <div className="text-4xl font-bold text-primary mb-2">-15%</div>
+              <h4 className="font-bold text-lg mb-2">Сокращение сроков</h4>
+              <p className="text-sm text-muted-foreground">
+                За счет современных технологий и опыта команды
+              </p>
+            </Card>
+
+            <Card className="text-center p-8 bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
+              <Icon name="TrendingDown" size={48} className="mx-auto mb-4 text-accent" />
+              <div className="text-4xl font-bold text-accent mb-2">0%</div>
+              <h4 className="font-bold text-lg mb-2">Скрытых платежей</h4>
+              <p className="text-sm text-muted-foreground">
+                Фиксированная цена в договоре без доплат
+              </p>
+            </Card>
+
+            <Card className="text-center p-8 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <Icon name="ThumbsUp" size={48} className="mx-auto mb-4 text-primary" />
+              <div className="text-4xl font-bold text-primary mb-2">98%</div>
+              <h4 className="font-bold text-lg mb-2">Довольных клиентов</h4>
+              <p className="text-sm text-muted-foreground">
+                Положительные отзывы и повторные обращения
+              </p>
+            </Card>
           </div>
         </div>
       </section>
