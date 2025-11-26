@@ -4,10 +4,18 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Slider } from '@/components/ui/slider';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [buildingType, setBuildingType] = useState('residential');
+  const [area, setArea] = useState(100);
+  const [floors, setFloors] = useState(2);
+  const [materials, setMaterials] = useState('brick');
+  const [foundation, setFoundation] = useState('strip');
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -90,6 +98,38 @@ const Index = () => {
     }
   ];
 
+  const calculateCost = () => {
+    const basePrices: Record<string, number> = {
+      residential: 45000,
+      commercial: 55000,
+      industrial: 40000,
+      reconstruction: 35000
+    };
+
+    const materialMultipliers: Record<string, number> = {
+      brick: 1.0,
+      concrete: 1.2,
+      wood: 0.85,
+      combined: 1.1
+    };
+
+    const foundationMultipliers: Record<string, number> = {
+      strip: 1.0,
+      slab: 1.15,
+      pile: 1.25
+    };
+
+    const basePrice = basePrices[buildingType] || 45000;
+    const materialCoef = materialMultipliers[materials] || 1.0;
+    const foundationCoef = foundationMultipliers[foundation] || 1.0;
+    const floorCoef = 1 + (floors - 1) * 0.15;
+
+    const totalCost = basePrice * area * materialCoef * foundationCoef * floorCoef;
+    return Math.round(totalCost / 1000) * 1000;
+  };
+
+  const estimatedCost = calculateCost();
+
   return (
     <div className="min-h-screen bg-background">
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-border z-50 shadow-sm">
@@ -112,6 +152,9 @@ const Index = () => {
               </button>
               <button onClick={() => scrollToSection('projects')} className="text-foreground hover:text-primary transition-colors font-medium">
                 Проекты
+              </button>
+              <button onClick={() => scrollToSection('calculator')} className="text-foreground hover:text-primary transition-colors font-medium">
+                Калькулятор
               </button>
               <button onClick={() => scrollToSection('reviews')} className="text-foreground hover:text-primary transition-colors font-medium">
                 Отзывы
@@ -358,6 +401,272 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="calculator" className="py-20 px-4 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-primary">
+              <Icon name="Calculator" size={16} className="mr-1" />
+              Калькулятор
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Рассчитайте стоимость проекта</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Укажите параметры вашего будущего объекта и получите предварительную смету
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="p-8 shadow-xl">
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <Label className="text-lg font-bold">Тип объекта</Label>
+                  <RadioGroup value={buildingType} onValueChange={setBuildingType} className="grid grid-cols-2 gap-4">
+                    <div>
+                      <RadioGroupItem value="residential" id="residential" className="peer sr-only" />
+                      <Label
+                        htmlFor="residential"
+                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <Icon name="Home" size={32} className="mb-2" />
+                        <span className="font-medium">Жилой дом</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="commercial" id="commercial" className="peer sr-only" />
+                      <Label
+                        htmlFor="commercial"
+                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <Icon name="Building" size={32} className="mb-2" />
+                        <span className="font-medium">Коммерческий</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="industrial" id="industrial" className="peer sr-only" />
+                      <Label
+                        htmlFor="industrial"
+                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <Icon name="Factory" size={32} className="mb-2" />
+                        <span className="font-medium">Промышленный</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="reconstruction" id="reconstruction" className="peer sr-only" />
+                      <Label
+                        htmlFor="reconstruction"
+                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <Icon name="Wrench" size={32} className="mb-2" />
+                        <span className="font-medium">Реконструкция</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-lg font-bold">Площадь объекта</Label>
+                    <Badge variant="secondary" className="text-lg">
+                      {area} м²
+                    </Badge>
+                  </div>
+                  <Slider
+                    value={[area]}
+                    onValueChange={(value) => setArea(value[0])}
+                    min={50}
+                    max={5000}
+                    step={50}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>50 м²</span>
+                    <span>5000 м²</span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-lg font-bold">Количество этажей</Label>
+                    <Badge variant="secondary" className="text-lg">
+                      {floors} {floors === 1 ? 'этаж' : floors < 5 ? 'этажа' : 'этажей'}
+                    </Badge>
+                  </div>
+                  <Slider
+                    value={[floors]}
+                    onValueChange={(value) => setFloors(value[0])}
+                    min={1}
+                    max={20}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>1 этаж</span>
+                    <span>20 этажей</span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-lg font-bold">Материал стен</Label>
+                  <RadioGroup value={materials} onValueChange={setMaterials} className="grid grid-cols-2 gap-3">
+                    <div>
+                      <RadioGroupItem value="brick" id="brick" className="peer sr-only" />
+                      <Label
+                        htmlFor="brick"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Кирпич</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="concrete" id="concrete" className="peer sr-only" />
+                      <Label
+                        htmlFor="concrete"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Бетон</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="wood" id="wood" className="peer sr-only" />
+                      <Label
+                        htmlFor="wood"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Дерево</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="combined" id="combined" className="peer sr-only" />
+                      <Label
+                        htmlFor="combined"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Комбинированный</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-lg font-bold">Тип фундамента</Label>
+                  <RadioGroup value={foundation} onValueChange={setFoundation} className="grid grid-cols-3 gap-3">
+                    <div>
+                      <RadioGroupItem value="strip" id="strip" className="peer sr-only" />
+                      <Label
+                        htmlFor="strip"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Ленточный</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="slab" id="slab" className="peer sr-only" />
+                      <Label
+                        htmlFor="slab"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Плитный</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="pile" id="pile" className="peer sr-only" />
+                      <Label
+                        htmlFor="pile"
+                        className="flex items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 cursor-pointer transition-all"
+                      >
+                        <span className="font-medium">Свайный</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+            </Card>
+
+            <div className="space-y-6">
+              <Card className="p-8 shadow-xl bg-gradient-to-br from-primary via-primary to-primary/90 text-white animate-scale-in">
+                <div className="text-center space-y-6">
+                  <div>
+                    <Icon name="Calculator" size={48} className="mx-auto mb-4 opacity-90" />
+                    <h3 className="text-2xl font-bold mb-2">Предварительная стоимость</h3>
+                    <p className="text-white/80 text-sm">Расчет на основе выбранных параметров</p>
+                  </div>
+                  
+                  <div className="py-8">
+                    <div className="text-6xl font-extrabold mb-2 animate-fade-in">
+                      {estimatedCost.toLocaleString('ru-RU')} ₽
+                    </div>
+                    <div className="text-white/80 text-lg">
+                      ≈ {Math.round(estimatedCost / area).toLocaleString('ru-RU')} ₽/м²
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white/80">Площадь:</span>
+                      <span className="font-bold">{area} м²</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white/80">Этажей:</span>
+                      <span className="font-bold">{floors}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white/80">Материал:</span>
+                      <span className="font-bold">
+                        {materials === 'brick' ? 'Кирпич' : 
+                         materials === 'concrete' ? 'Бетон' : 
+                         materials === 'wood' ? 'Дерево' : 'Комбинированный'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white/80">Фундамент:</span>
+                      <span className="font-bold">
+                        {foundation === 'strip' ? 'Ленточный' : 
+                         foundation === 'slab' ? 'Плитный' : 'Свайный'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Button 
+                    onClick={() => scrollToSection('contact')} 
+                    size="lg" 
+                    className="w-full bg-white text-primary hover:bg-white/90 font-bold text-lg"
+                  >
+                    <Icon name="MessageSquare" size={20} className="mr-2" />
+                    Получить точную смету
+                  </Button>
+                </div>
+              </Card>
+
+              <Card className="p-6 border-accent/50">
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Icon name="Info" size={20} className="text-accent flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-bold mb-1">Обратите внимание</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Это предварительный расчет. Точная стоимость определяется после выезда специалиста на объект и подготовки проектной документации.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <Icon name="CheckCircle" size={20} className="text-primary flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-bold mb-1">В стоимость включено</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Материалы и работа</li>
+                        <li>• Базовые коммуникации</li>
+                        <li>• Гарантия на все работы</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
